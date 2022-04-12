@@ -1,7 +1,7 @@
 {
-  "name": "coco-server",
+  "name": "mumu-server",
   "version": "1.0.0",
-  "description": "coco server",
+  "description": "mumu server",
   "main": "index.js",
   "scripts": {
     "dev": "egg-bin dev",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coco-h5/coco-server.git"
+    "url": "git+https://github.com/mumu-page/mumu-server.git"
   },
   "author": "muwoo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/coco-h5/coco-server/issues"
+    "url": "https://github.com/mumu-page/mumu-server/issues"
   },
-  "homepage": "https://github.com/coco-h5/coco-server#readme",
+  "homepage": "https://github.com/mumu-page/mumu-server#readme",
   "dependencies": {
     "@octokit/core": "^3.2.5",
     "download-git-repo": "^3.0.2",

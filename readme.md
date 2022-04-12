@@ -1,4 +1,4 @@
-## coco 后台
+## mumu 后台
 
 ### mysql 配置
 
@@ -8,7 +8,7 @@ module.exports = {
     dialect: 'mysql',
     host: '127.0.0.1',
     port: 3306,
-    database: 'coco',
+    database: 'mumu',
     username: 'root',
     password: 'root1234',
     logging: false
@@ -68,7 +68,7 @@ module.exports = app => {
 ```
 
 ### 启动服务
-先创建 `mysql` 数据库 `coco`。在启动服务，会自动创建表
+先创建 `mysql` 数据库 `mumu`。在启动服务，会自动创建表
 ```shell
 $ npm run dev
 ```

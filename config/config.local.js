@@ -3,7 +3,7 @@ module.exports = {
     dialect: 'mysql',
     host: '127.0.0.1',
     port: 3306,
-    database: 'coco',
+    database: 'mumu',
     username: 'root',
     password: '123456',
     logging: false
@@ -19,7 +19,7 @@ module.exports = {
     },
     domainWhiteList: [
       'http://localhost:8080',
-      // 'http://aaa.coco-h5.cn:8080'
+      // 'http://aaa.mumu-h5.cn:8080'
     ]
   }
 };

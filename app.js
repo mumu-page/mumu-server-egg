@@ -1,13 +1,11 @@
-
-
 class AppBootHook {
-    constructor(app) {
-      this.app = app;
-    }
-
-    willReady() {
-      this.app.model.sync();
-    }
+  constructor(app) {
+    this.app = app;
   }
-  
-  module.exports = AppBootHook;
+
+  willReady() {
+    this.app.model.sync();
+  }
+}
+
+module.exports = AppBootHook;
