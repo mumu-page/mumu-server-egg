@@ -1,11 +1,11 @@
 module.exports = {
   sequelize: {
     dialect: 'mysql',
-    host: '127.0.0.1',
+    host: '152.32.211.215',
     port: 3306,
     database: 'mumu',
-    username: 'root',
-    password: '123456',
+    username: 'mumu',
+    password: 'W3LWJXyMEKCNzHTy',
     logging: false
   },
   cors: {
