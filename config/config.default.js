@@ -8,5 +8,11 @@ module.exports = appInfo => ({
   static: {
     dir: path.join(appInfo.baseDir, 'static/dist'),
     prefix: '/static/'
-  }
+  },
+  // cluster: {
+  //   https: {
+  //     key: '/www/server/panel/vhost/cert/api.resonance.fun/privkey.pem',
+  //     cert: '/www/server/panel/vhost/cert/api.resonance.fun/fullchain.pem',
+  //   },
+  // }
 });

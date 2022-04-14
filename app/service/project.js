@@ -4,15 +4,12 @@ const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   return new Promise(async (resolve, reject) => {
-    console.log('downloadRepoUrl', downloadRepoUrl);
-    console.log('temp_dest', temp_dest);
     download(downloadRepoUrl + '#main', temp_dest, (err) => {
       if (err) {
-        console.log(err);
         reject('template dowload fail!');
       } else {
         resolve('template dowload success!');
@@ -22,28 +19,27 @@ function downloadFunc(downloadRepoUrl, temp_dest) {
 }
 
 async function release(repoUrl, repoName) {
-  console.log('repoUrl', repoUrl)
-  console.log('repoName', repoName)
   try {
     process.execSync(
       [
         `cd static/${repoName}/dist`,
         `git init`,
-        `git checkout -b gh-pages`,
         `git remote add origin ${repoUrl}`,
         `git add -A`,
         `git commit -m 'deploy'`,
+        `git branch gh-pages`,
+        `git checkout gh-pages`,
         `git push -f origin gh-pages`,
-        `cd -` // 回到最初目录 liunx
+        // `cd -` // 回到最初目录 liunx
       ].join(' && ')
     )
   } catch (e) {
-    console.log('error');
+    console.log('release error');
   } finally {
     process.exec([
       `cd static`,
-      `rm -rf ${repoName}`, // linux
-      // `rd /s /q ${repoName} ` // window
+      // `rm -rf ${repoName}`, // linux
+      `rd /s /q ${repoName} ` // window
     ].join(' && '), error => {
       if (error) {
         console.log('清除模板失败！', error)
