@@ -4,7 +4,7 @@ const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   return new Promise(async (resolve, reject) => {
@@ -65,7 +65,7 @@ async function renderTpl({ templateGit, name: repoName, data, repoUrl, templateC
   const res = fs.readFileSync(`${temp_dest}/dist/index.html`, 'utf-8');
   let target = res.replace(
     /(?<=<script data-inject>).*?(?=<\/script>)/,
-    `window.__coco_config__= ${JSON.stringify({
+    `window.__mumu_config__= ${JSON.stringify({
       ...data,
       components: data.userSelectComponents
     })}`

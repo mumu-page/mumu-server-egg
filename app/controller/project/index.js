@@ -43,6 +43,7 @@ class ProjectController extends Controller {
       result: project,
     }
   }
+
   async query() {
     const {
       id,
@@ -66,6 +67,7 @@ class ProjectController extends Controller {
       result
     }
   }
+
   async preview() {
     const {
       id,
@@ -87,6 +89,30 @@ class ProjectController extends Controller {
     }
   }
 
+  async updateConfig() {
+    const {params, model} = this.ctx;
+    const {pageConfig, id} = params;
+    const {
+      gitName: name,
+      templateId,
+      version,
+    } = pageConfig.config;
+    const project = await model.Project.update({
+      templateId,
+      name,
+      pageConfig: JSON.stringify(pageConfig),
+      version,
+    }, {
+      where: {
+        id
+      }
+    });
+
+    this.ctx.body = {
+      success: true,
+      result: project,
+    }
+  }
 }
 
 module.exports = ProjectController;
