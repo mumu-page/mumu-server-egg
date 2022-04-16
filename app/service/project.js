@@ -4,7 +4,7 @@ const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   return new Promise(async (resolve, reject) => {
@@ -30,7 +30,7 @@ async function release(repoUrl, repoName) {
         `git branch gh-pages`,
         `git checkout gh-pages`,
         `git push -f origin gh-pages`,
-        // `cd -` // 回到最初目录 liunx
+        `cd -` // 回到最初目录 liunx
       ].join(' && ')
     )
   } catch (e) {
@@ -38,8 +38,8 @@ async function release(repoUrl, repoName) {
   } finally {
     process.exec([
       `cd static`,
-      // `rm -rf ${repoName}`, // linux
-      `rd /s /q ${repoName} ` // window
+      `rm -rf ${repoName}`, // linux
+      // `rd /s /q ${repoName} ` // window
     ].join(' && '), error => {
       if (error) {
         console.log('清除模板失败！', error)

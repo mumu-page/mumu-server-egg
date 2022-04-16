@@ -110,7 +110,7 @@ class ProjectController extends Controller {
 
     this.ctx.body = {
       success: true,
-      result: project,
+      message: '项目保存成功'
     }
   }
 }
