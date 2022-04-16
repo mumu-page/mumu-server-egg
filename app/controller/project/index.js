@@ -50,18 +50,7 @@ class ProjectController extends Controller {
     } = this.ctx.params;
     const where = {};
     if (id) where.id = id;
-    const result = await this.ctx.model.Project.findAll({
-      where,
-      order: [
-        // 将转义 title 并针对有效方向列表进行降序排列
-        ['updatedAt', 'DESC'],
-      ]
-    })
-    result.forEach(project => {
-      project.pageConfig = JSON.parse(project.pageConfig)
-      project.gitConfig = JSON.parse(project.gitConfig)
-      project.releaseInfo = JSON.parse(project.releaseInfo)
-    })
+    const result = await this.ctx.service.project.query(where)
     this.ctx.body = {
       success: true,
       result
@@ -111,6 +100,35 @@ class ProjectController extends Controller {
     this.ctx.body = {
       success: true,
       message: '项目保存成功'
+    }
+  }
+
+  async release() {
+    const {params, service} = this.ctx;
+    const {id} = params;
+    const where = {};
+    if (id) where.id = id;
+    const projects = await this.ctx.service.project.query(where)
+    const {pageConfig} = projects && projects[0] || {};
+    const {
+      gitName: name,
+      templateName,
+      templateGit,
+    } = pageConfig.config;
+
+    const result = await service.project.release({
+      ...pageConfig.config,
+      name,
+      data: pageConfig,
+      templateConfig: {
+        templateName,
+        git: templateGit,
+      }
+    });
+
+    this.ctx.body = {
+      success: !!result,
+      result,
     }
   }
 }

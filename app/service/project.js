@@ -7,12 +7,14 @@ const process = require('child_process');
 const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
+  console.log('下载模版中...')
   return new Promise(async (resolve, reject) => {
     download(downloadRepoUrl + '#main', temp_dest, (err) => {
       if (err) {
-        reject('template dowload fail!');
+        reject('模板下载失败!');
       } else {
-        resolve('template dowload success!');
+        console.log('模板下载成功!')
+        resolve();
       }
     })
   });
@@ -64,14 +66,12 @@ async function renderTpl({ templateGit, name: repoName, data, repoUrl, templateC
   // 注入数据
   const res = fs.readFileSync(`${temp_dest}/dist/index.html`, 'utf-8');
   let target = res.replace(
-    /(?<=<script data-inject>).*?(?=<\/script>)/,
+    /(?<=<script data-inject>)(.|\n)*?(?=<\/script>)/,
     `window.__mumu_config__= ${JSON.stringify({
       ...data,
       components: data.userSelectComponents
     })}`
   );
-
-  target = target.replace(/(?<=<title>).*?(?=<\/title>)/, data.config.projectName);
 
   fs.writeFileSync(`${temp_dest}/dist/index.html`, target);
 
@@ -115,6 +115,34 @@ class ProjectService extends Service {
       repoUrl: ssh_url
     });
     return { id, ssh_url }
+  }
+
+  async release(config) {
+    // 判断是否存在项目
+    const data = await isExistProject('mumu-page', config.name)
+    if (!data) return null
+
+    await renderTpl({
+      ...config,
+      repoUrl: data.ssh_url
+    });
+    return data
+  }
+
+  async query(where = {}) {
+    const result = await this.ctx.model.Project.findAll({
+      where,
+      order: [
+        // 将转义 title 并针对有效方向列表进行降序排列
+        ['updatedAt', 'DESC'],
+      ]
+    })
+    result.forEach(project => {
+      project.pageConfig = JSON.parse(project.pageConfig)
+      project.gitConfig = JSON.parse(project.gitConfig)
+      project.releaseInfo = JSON.parse(project.releaseInfo)
+    })
+    return result
   }
 }
 

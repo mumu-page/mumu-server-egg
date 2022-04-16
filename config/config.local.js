@@ -20,7 +20,7 @@ module.exports = {
     },
     domainWhiteList: [
       'http://localhost:8080',
-      // 'http://aaa.mumu-h5.cn:8080'
+      'http://localhost:8081',
     ]
   }
 };
