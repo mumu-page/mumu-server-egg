@@ -7,7 +7,7 @@ const process = require('child_process');
 const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
-  console.log('下载模版中...')
+  console.log('开始下载模版...')
   return new Promise(async (resolve, reject) => {
     download(downloadRepoUrl + '#main', temp_dest, (err) => {
       if (err) {
@@ -21,6 +21,7 @@ function downloadFunc(downloadRepoUrl, temp_dest) {
 }
 
 async function release(repoUrl, repoName) {
+  console.log('开始上传模版...')
   try {
     process.execSync(
       [
