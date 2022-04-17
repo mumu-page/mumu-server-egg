@@ -1,10 +1,10 @@
 const Service = require('egg').Service;
-const { Octokit } = require("@octokit/core");
+const {Octokit} = require("@octokit/core");
 const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({auth: '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'});
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   console.log('开始下载模版...')
@@ -51,7 +51,7 @@ async function release(repoUrl, repoName) {
   }
 }
 
-async function renderTpl({ templateGit, name: repoName, data, repoUrl, templateConfig }) {
+async function renderTpl({templateGit, name: repoName, data, repoUrl, templateConfig}) {
   if (!(await utils.existOrNot('./static'))) {
     await utils.mkdirFolder('static');
   }
@@ -70,9 +70,25 @@ async function renderTpl({ templateGit, name: repoName, data, repoUrl, templateC
     /(?<=<script data-inject>)(.|\n)*?(?=<\/script>)/,
     `window.__mumu_config__= ${JSON.stringify({
       ...data,
-      components: data.userSelectComponents
+      components: data.userSelectComponents,
+      pageData: data.config,
     })}`
   );
+  // 修改title
+  target = target.replace(/(?<=<title>).*?(?=<\/title>)/, data.config.projectName);
+  // 远程组件注入
+  if(data.remoteComponents.length) {
+    let replaceValue = ''
+    data.remoteComponents.forEach(item => {
+      const cssStyle = `<link href="${item.css}" rel="preload" as="style">`
+      const jsScripts = `<script src="${item.js}" rel="preload"></script>`
+      replaceValue += `${cssStyle}\n${jsScripts}`
+    })
+    target = target.replace(
+      /(?<=<!-- remote-script-inject-start -->)(.|\n)*?(?=<!-- remote-script-inject-end -->)/,
+      replaceValue
+    );
+  }
 
   fs.writeFileSync(`${temp_dest}/dist/index.html`, target);
 
@@ -83,7 +99,7 @@ async function renderTpl({ templateGit, name: repoName, data, repoUrl, templateC
 
 async function isExistProject(owner, repo) {
   try {
-    const { data } = await octokit.request('GET /repos/{owner}/{repo}', {
+    const {data} = await octokit.request('GET /repos/{owner}/{repo}', {
       owner,
       repo
     })
@@ -104,7 +120,7 @@ class ProjectService extends Service {
       ssh_url = data.ssh_url
     } else {
       // 创建项目
-      const { data } = await octokit.request('POST /orgs/{org}/repos', {
+      const {data} = await octokit.request('POST /orgs/{org}/repos', {
         org: 'mumu-page',
         name: config.name
       });
@@ -116,7 +132,7 @@ class ProjectService extends Service {
       ...config,
       repoUrl: ssh_url
     });
-    return { id, ssh_url }
+    return {id, ssh_url}
   }
 
   async release(config) {
