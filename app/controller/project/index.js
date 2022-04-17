@@ -114,7 +114,7 @@ class ProjectController extends Controller {
       gitName: name,
       templateName,
       templateGit,
-    } = pageConfig.config;
+    } = pageConfig && pageConfig.config || {};
 
     const result = await service.project.release({
       ...pageConfig.config,
@@ -125,10 +125,16 @@ class ProjectController extends Controller {
         git: templateGit,
       }
     });
-
+    if(result) {
+      return this.ctx.body = {
+        success: true,
+        result: `https://mumu-page.github.io/${name}`,
+      }
+    }
     this.ctx.body = {
-      success: !!result,
-      result,
+      success: false,
+      message: '发布失败',
+      result
     }
   }
 }

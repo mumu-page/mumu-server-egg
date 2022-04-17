@@ -4,7 +4,7 @@ const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({ auth: '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' });
+const octokit = new Octokit({ auth: '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' });
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   console.log('开始下载模版...')
@@ -89,6 +89,7 @@ async function isExistProject(owner, repo) {
     })
     return data
   } catch (error) {
+    // console.log('error', error)
     return false
   }
 }

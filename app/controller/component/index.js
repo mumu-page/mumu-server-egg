@@ -15,11 +15,15 @@ class ComponentController extends Controller {
     const {id, gitUrl} = this.ctx.params;
 
     const where = formatWhereCase({id, gitUrl});
+    const result = await this.ctx.model.Component.findAll({
+      where
+    })
+    Array.isArray(result) && result.forEach(item => {
+      item.config = JSON.parse(item.config)
+    })
     this.ctx.body = {
       success: true,
-      result: await this.ctx.model.Component.findAll({
-        where
-      }),
+      result
     }
   }
 
