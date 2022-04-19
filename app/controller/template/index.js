@@ -1,4 +1,5 @@
 const Controller = require('egg').Controller;
+const ResponseUtil = require('../../utils/response');
 
 class TemplateController extends Controller {
   async query() {
@@ -12,10 +13,7 @@ class TemplateController extends Controller {
     const result = await this.ctx.model.Template.findAll({
       where
     });
-    this.ctx.body = {
-      success: true,
-      result
-    }
+    this.ctx.body = new ResponseUtil().ok(result)
   }
 
   async updateTemplate() {
@@ -40,32 +38,20 @@ class TemplateController extends Controller {
               gitUrl
             }
           })
-          this.ctx.body = {
-            success: true,
-            result
-          };
+          this.ctx.body = new ResponseUtil().ok(result)
         } else {
           const result = await model.Template.create({
             ...params,
             type: 0,
           });
-          this.ctx.body = {
-            success: true,
-            result
-          };
+          this.ctx.body = new ResponseUtil().ok(result)
         }
       } catch (e) {
-        this.ctx.body = {
-          showType: 0,
-          result: e
-        };
+        this.ctx.body = new ResponseUtil().fail(e)
       }
     } else {
       this.ctx.body = 500;
-      this.ctx.body = {
-        showType: 0,
-        result: 'gitUrl || name 必填'
-      };
+      this.ctx.body = new ResponseUtil().fail('gitUrl || name 必填')
     }
   }
 }

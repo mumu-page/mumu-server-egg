@@ -6,6 +6,7 @@ class ProjectController extends Controller {
   async createProject() {
     const {params, model, service} = this.ctx;
     const {pageConfig} = params;
+    console.log('pageConfig', pageConfig);
     const {
       gitName: name,
       templateName,
@@ -38,10 +39,7 @@ class ProjectController extends Controller {
       version,
     });
 
-    this.ctx.body = {
-      success: true,
-      result: project,
-    }
+    this.ctx.body = new ResponseUtil().ok(project)
   }
 
   async query() {

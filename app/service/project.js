@@ -4,7 +4,7 @@ const download = require('download-git-repo');
 const utils = require('../utils/fileUtils');
 const fs = require('fs');
 const process = require('child_process');
-const octokit = new Octokit({auth: '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'});
+const octokit = new Octokit({auth: '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'});
 
 function downloadFunc(downloadRepoUrl, temp_dest) {
   console.log('开始下载模版...')
